@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -14,13 +15,20 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CategoryFragment.newInstance] factory method to
+ * Use the [DetailCategoryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CategoryFragment : Fragment(), View.OnClickListener {
+class DetailCategoryFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var tvCategoryName: TextView
+    private lateinit var tvCategoryDescription: TextView
+    private lateinit var btnProfile: Button
+    private lateinit var btnShowDialog: Button
+
+    var description: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +43,7 @@ class CategoryFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_category, container, false)
+        return inflater.inflate(R.layout.fragment_detail_category, container, false)
     }
 
     companion object {
@@ -45,43 +53,39 @@ class CategoryFragment : Fragment(), View.OnClickListener {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment CategoryFragment.
+         * @return A new instance of fragment DetailCategoryFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CategoryFragment().apply {
+            DetailCategoryFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
+
+        var EXTRA_NAME = "extra_name"
+        var EXTRA_DESCRIPTION = "extra_description"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnDetailCategory:Button = view.findViewById(R.id.btn_detail_category)
-        btnDetailCategory.setOnClickListener(this)
-    }
+        tvCategoryName = view.findViewById(R.id.tv_category_name)
+        tvCategoryDescription = view.findViewById(R.id.tv_category_description)
+        btnProfile = view.findViewById(R.id.btn_profile)
+        btnShowDialog = view.findViewById(R.id.btn_show_dialog)
 
-    override fun onClick(v: View?) {
-        if (v?.id === R.id.btn_detail_category) {
-            val detailCategoryFragment = DetailCategoryFragment()
+        if (savedInstanceState != null) {
+            val descFromBundle = savedInstanceState.getString(EXTRA_DESCRIPTION )
+            description = descFromBundle
+        }
 
-            val bundle = Bundle()
-            bundle.putString(DetailCategoryFragment.EXTRA_NAME, "LifeStyle")
-            val description = "Kategori berisikan Produk Lifestyle"
-
-            detailCategoryFragment.arguments = bundle
-            detailCategoryFragment.description = description
-
-            val fragmentManager = parentFragmentManager
-            fragmentManager?.beginTransaction()?.apply {
-                replace(R.id.frame_container, detailCategoryFragment, DetailCategoryFragment::class.java.simpleName)
-                addToBackStack(null)
-                commit()
-            }
+        if (arguments != null) {
+            val categoryName = arguments?.getString(EXTRA_NAME)
+            tvCategoryName.text = categoryName
+            tvCategoryDescription.text = description
         }
     }
 }
