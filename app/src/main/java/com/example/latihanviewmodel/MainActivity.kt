@@ -2,15 +2,19 @@ package com.example.latihanviewmodel
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.latihanviewmodel.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var activityMainBinding : ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+//    private lateinit var viewModel: MainViewModel
+//    Menggunakan Library KTX ViewModel
+    private val viewModel : MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         displayResult()
 
