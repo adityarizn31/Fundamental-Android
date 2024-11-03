@@ -9,9 +9,11 @@ import com.example.latihanretrofit.data.response.PostReviewResponse
 import com.example.latihanretrofit.data.response.Restaurant
 import com.example.latihanretrofit.data.response.RestaurantResponse
 import com.example.latihanretrofit.data.retrofit.ApiConfig
+import com.example.latihanretrofit.utils.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class MainViewModel  : ViewModel() {
 
@@ -23,6 +25,9 @@ class MainViewModel  : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading : LiveData<Boolean> = _isLoading
+
+    private val _snackBarText = MutableLiveData<Event<String>>()
+    val snackbarText : LiveData<Event<String>> = _snackBarText
 
     companion object {
         private const val TAG = "MainViewModel"
@@ -73,6 +78,8 @@ class MainViewModel  : ViewModel() {
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null) {
                     _listReview.value = responseBody.customerReviews
+                    _snackBarText.value = Event(response.body()?.message.toString())
+
                 } else {
                     Log.e(TAG, "onFailure : ${response.message()}")
                 }

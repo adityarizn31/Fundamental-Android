@@ -20,6 +20,7 @@ import com.example.latihanretrofit.data.response.Restaurant
 import com.example.latihanretrofit.data.response.RestaurantResponse
 import com.example.latihanretrofit.data.retrofit.ApiConfig
 import com.example.latihanretrofit.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,6 +72,16 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.postReview(binding.edReview.text.toString())
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        mainViewModel.snackbarText.observe(this) {
+            it.getContentIfNotHandled()?.let { snackBarText ->
+                Snackbar.make(
+                    window.decorView.rootView,
+                    snackBarText,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
